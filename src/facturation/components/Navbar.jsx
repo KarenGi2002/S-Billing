@@ -1,10 +1,12 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, NavLink } from 'react-router-dom'
 
 export const Navbar = () => {
   return (
     <>
       <nav>
-        <p>Navbar</p>
+        <NavLink to="/inventories">Inventories</NavLink>
+        <NavLink to="/clients">Clients</NavLink>
+        <NavLink to="/reports">Reports</NavLink>
       </nav>
 
       <Outlet />
