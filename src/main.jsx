@@ -2,13 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Navbar } from './facturation/components'
-import { ErrorPage } from './facturation/pages'
+import {
+  ErrorPage,
+  Articles,
+  Clients,
+  Inventories,
+  Invoices,
+  Reports,
+  Invoice
+} from './facturation/pages'
 import { Login, Signup } from './auth/pages'
-import { Articles } from './facturation/pages/article/Articles'
-import { Clients } from './facturation/pages/client/Clients'
-import { Inventories } from './facturation/pages/inventory/Inventories'
-import { Invoices } from './facturation/pages/invoice/Invoices'
-import { Reports } from './facturation/pages/report/Reports'
 import './index.css'
 
 const router = createBrowserRouter([
