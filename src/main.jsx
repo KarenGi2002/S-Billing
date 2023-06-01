@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Articles />
+        element: <Inventories />
       },
       {
         path: '/articles',
@@ -39,6 +39,10 @@ const router = createBrowserRouter([
       {
         path: '/invoices',
         element: <Invoices />
+      },
+      {
+        path: '/invoice',
+        element: <Invoice />
       },
       {
         path: '/reports',
