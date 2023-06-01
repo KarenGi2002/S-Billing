@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Navbar } from './facturation/components'
-import { App, ErrorPage } from './facturation/pages'
+import { ErrorPage } from './facturation/pages'
 import { Login, Signup } from './auth/pages'
 import { Articles } from './facturation/pages/article/Articles'
 import { Clients } from './facturation/pages/client/Clients'
@@ -19,7 +19,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <App />
+        element: <Articles />
       },
       {
         path: '/articles',
