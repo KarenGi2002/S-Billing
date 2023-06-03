@@ -13,6 +13,7 @@ import {
 } from './facturation/pages'
 import { Login, Signup } from './auth/pages'
 import './index.css'
+import 'antd/dist/reset.css'
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
         element: <Inventories />
       },
       {
-        path: '/articles',
+        path: '/inventories/:inventory_id/articles',
         element: <Articles />
       },
       {
@@ -37,16 +38,16 @@ const router = createBrowserRouter([
         element: <Inventories />
       },
       {
-        path: '/invoices',
+        path: '/reports',
+        element: <Reports />
+      },
+      {
+        path: '/reports/:report_id/invoices',
         element: <Invoices />
       },
       {
-        path: '/invoice',
+        path: '/reports/:report_id/invoices/:invoice_id',
         element: <Invoice />
-      },
-      {
-        path: '/reports',
-        element: <Reports />
       }
     ]
   },
