@@ -4,7 +4,7 @@ export const Inventories = () => {
   return (
     <>
       <h1>Inventories</h1>
-      <NavLink to="/articles">Articles</NavLink>
+      <NavLink to="/inventories/10/articles">Articles</NavLink>
     </>
   )
 }
