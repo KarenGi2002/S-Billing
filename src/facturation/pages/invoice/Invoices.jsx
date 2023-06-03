@@ -1,11 +1,12 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 
 export const Invoices = () => {
+  const { report_id } = useParams()
   return (
     <>
-      <h1>Invoices</h1>
+      <h1>Invoices for report {report_id}</h1>
       <p>/reports/:report_id/invoices</p>
-      <NavLink to="/invoice">Invoice</NavLink>
+      <NavLink to={`/reports/${report_id}/invoices/10`}>Invoice</NavLink>
     </>
   )
 }
