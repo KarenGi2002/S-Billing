@@ -2,60 +2,75 @@ import { useEffect, useState } from 'react'
 import { AddClient, AddNewButton } from '../../components/'
 import { Button, Space, Table } from 'antd'
 import { CustomerApi } from '../../../services'
-
-const tableColumns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name'
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address'
-  },
-  {
-    title: 'RTN',
-    dataIndex: 'rtn',
-    key: 'rtn'
-  },
-  {
-    title: 'Phone',
-    dataIndex: 'phoneNumber',
-    key: 'phoneNumber'
-  },
-  {
-    title: 'Type',
-    dataIndex: 'customerType',
-    key: 'customerType'
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (_, record) => (
-      <Space size="middle">
-        <Button
-          type="primary"
-          icon={<span className="material-symbols-outlined">edit</span>}
-          size="large"
-          onClick={() => console.log(record.customerId)}
-        />
-        <Button
-          type="primary"
-          icon={<span className="material-symbols-outlined">delete</span>}
-          size="large"
-          onClick={() => console.log(record.customerId)}
-        />
-      </Space>
-    )
-  }
-]
+import { deleteClient, findClient, clientTypes } from '../../helpers/client'
+import { EditClient } from '../../components/client/EditClient'
 
 export const Clients = () => {
-  const [displayForm, setDisplayForm] = useState(false)
   const [customers, setCustomers] = useState([])
+  const [editCustomer, setEditCustomer] = useState({})
   const [error, setError] = useState('')
+  const [displayForm, setDisplayForm] = useState(false)
   const toggleDisplayForm = () => setDisplayForm((prev) => !prev)
+  const toggleDisplayEditForm = () => setEditCustomer({})
+  const updateGuiClient = (customerId, updatedClient) => {
+    setCustomers((prev) =>
+      prev.map((customer) => {
+        if (customer.customerId !== customerId) return customer
+        return {
+          key: customer.key,
+          customerId,
+          ...updatedClient
+        }
+      })
+    )
+  }
+  const tableColumns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name'
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address'
+    },
+    {
+      title: 'RTN',
+      dataIndex: 'rtn',
+      key: 'rtn'
+    },
+    {
+      title: 'Phone',
+      dataIndex: 'phoneNumber',
+      key: 'phoneNumber'
+    },
+    {
+      title: 'Type',
+      key: 'customerType',
+      render: (_, record) => <>{clientTypes[record.customerType].value}</>
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            type="primary"
+            icon={<span className="material-symbols-outlined">edit</span>}
+            size="large"
+            onClick={() => setEditCustomer(findClient(record.customerId, customers))}
+          />
+          <Button
+            type="primary"
+            icon={<span className="material-symbols-outlined">delete</span>}
+            size="large"
+            onClick={() => deleteClient(record.customerId, setCustomers)}
+          />
+        </Space>
+      )
+    }
+  ]
 
   /* Load customers from API get endpoint */
   useEffect(() => {
