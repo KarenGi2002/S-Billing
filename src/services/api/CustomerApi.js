@@ -11,7 +11,7 @@
  *
  */
 
-import ApiClient from '../ApiClient';
+import ApiClient from '../ApiClient'
 
 /**
  * Customer service.
@@ -27,7 +27,7 @@ export default class CustomerApi {
    * default to {@link module:ApiClient#instance} if unspecified.
    */
   constructor(apiClient) {
-    this.apiClient = apiClient || ApiClient.instance;
+    this.apiClient = apiClient || ApiClient.instance
   }
 
   /**
@@ -42,17 +42,17 @@ export default class CustomerApi {
    * @param {module:api/CustomerApi~apiCustomerGetCallback} callback The callback function, accepting three arguments: error, data, response
    */
   apiCustomerGet(callback) {
-    let postBody = null;
+    let postBody = null
 
-    let pathParams = {};
-    let queryParams = {};
-    let headerParams = {};
-    let formParams = {};
+    let pathParams = {}
+    let queryParams = {}
+    let headerParams = {}
+    let formParams = {}
 
-    let authNames = [];
-    let contentTypes = [];
-    let accepts = [];
-    let returnType = null;
+    let authNames = []
+    let contentTypes = []
+    let accepts = []
+    let returnType = null
     return this.apiClient.callApi(
       '/api/Customer',
       'GET',
@@ -66,8 +66,8 @@ export default class CustomerApi {
       accepts,
       returnType,
       null,
-      callback,
-    );
+      callback
+    )
   }
 
   /**
@@ -83,23 +83,23 @@ export default class CustomerApi {
    * @param {module:api/CustomerApi~apiCustomerIdDeleteCallback} callback The callback function, accepting three arguments: error, data, response
    */
   apiCustomerIdDelete(id, callback) {
-    let postBody = null;
+    let postBody = null
     // verify the required parameter 'id' is set
     if (id === undefined || id === null) {
-      throw new Error("Missing the required parameter 'id' when calling apiCustomerIdDelete");
+      throw new Error("Missing the required parameter 'id' when calling apiCustomerIdDelete")
     }
 
     let pathParams = {
-      id: id,
-    };
-    let queryParams = {};
-    let headerParams = {};
-    let formParams = {};
+      id: id
+    }
+    let queryParams = {}
+    let headerParams = {}
+    let formParams = {}
 
-    let authNames = [];
-    let contentTypes = [];
-    let accepts = [];
-    let returnType = null;
+    let authNames = []
+    let contentTypes = []
+    let accepts = []
+    let returnType = null
     return this.apiClient.callApi(
       '/api/Customer/{id}',
       'DELETE',
@@ -113,8 +113,8 @@ export default class CustomerApi {
       accepts,
       returnType,
       null,
-      callback,
-    );
+      callback
+    )
   }
 
   /**
@@ -132,24 +132,24 @@ export default class CustomerApi {
    * @param {module:api/CustomerApi~apiCustomerIdPutCallback} callback The callback function, accepting three arguments: error, data, response
    */
   apiCustomerIdPut(id, opts, callback) {
-    opts = opts || {};
-    let postBody = opts['customer'];
+    opts = opts || {}
+    let postBody = opts['customer']
     // verify the required parameter 'id' is set
     if (id === undefined || id === null) {
-      throw new Error("Missing the required parameter 'id' when calling apiCustomerIdPut");
+      throw new Error("Missing the required parameter 'id' when calling apiCustomerIdPut")
     }
 
     let pathParams = {
-      id: id,
-    };
-    let queryParams = {};
-    let headerParams = {};
-    let formParams = {};
+      id: id
+    }
+    let queryParams = {}
+    let headerParams = {}
+    let formParams = {}
 
-    let authNames = [];
-    let contentTypes = ['application/json', 'text/json', 'application/*+json'];
-    let accepts = [];
-    let returnType = null;
+    let authNames = []
+    let contentTypes = ['application/json', 'text/json', 'application/*+json']
+    let accepts = []
+    let returnType = null
     return this.apiClient.callApi(
       '/api/Customer/{id}',
       'PUT',
@@ -163,8 +163,8 @@ export default class CustomerApi {
       accepts,
       returnType,
       null,
-      callback,
-    );
+      callback
+    )
   }
 
   /**
@@ -181,18 +181,18 @@ export default class CustomerApi {
    * @param {module:api/CustomerApi~apiCustomerPostCallback} callback The callback function, accepting three arguments: error, data, response
    */
   apiCustomerPost(opts, callback) {
-    opts = opts || {};
-    let postBody = opts['customer'];
+    opts = opts || {}
+    let postBody = opts['customer']
 
-    let pathParams = {};
-    let queryParams = {};
-    let headerParams = {};
-    let formParams = {};
+    let pathParams = {}
+    let queryParams = {}
+    let headerParams = {}
+    let formParams = {}
 
-    let authNames = [];
-    let contentTypes = ['application/json', 'text/json', 'application/*+json'];
-    let accepts = [];
-    let returnType = null;
+    let authNames = []
+    let contentTypes = ['application/json', 'text/json', 'application/*+json']
+    let accepts = []
+    let returnType = null
     return this.apiClient.callApi(
       '/api/Customer',
       'POST',
@@ -206,7 +206,7 @@ export default class CustomerApi {
       accepts,
       returnType,
       null,
-      callback,
-    );
+      callback
+    )
   }
 }
