@@ -1,6 +1,6 @@
 import { Button, Form, Input, Select } from 'antd'
 import PropTypes from 'prop-types'
-import clientTypes from './clientTypes'
+import { clientTypes } from '../../helpers/client'
 import { CustomerApi } from '../../../services'
 import { useState } from 'react'
 import { Popup } from '../Popup'
