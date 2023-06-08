@@ -95,6 +95,13 @@ export const Clients = () => {
       <Table dataSource={customers} columns={tableColumns} />
       {error !== '' && <p>{error}</p>}
       {displayForm && <AddClient toggleDisplayForm={toggleDisplayForm} />}
+      {Object.keys(editCustomer).length !== 0 && (
+        <EditClient
+          client={editCustomer}
+          toggleDisplayForm={toggleDisplayEditForm}
+          updateGuiClient={updateGuiClient}
+        />
+      )}
     </section>
   )
 }
