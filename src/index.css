@@ -71,3 +71,28 @@ button.reset {
   background: none;
   border: none;
 }
+
+.container {
+  max-width: 1024px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.popup {
+  background-color: rgba(32, 32, 32, 0.804);
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  display: grid;
+  place-items: center;
+}
+
+.popup__container {
+  max-width: 600px;
+  width: 100%;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 5px;
+}
