@@ -5,7 +5,7 @@ import { CustomerApi } from '../../../services'
 import { useState } from 'react'
 import { Popup } from '../Popup'
 
-export const AddClient = ({ toggleDisplayForm }) => {
+export const AddClient = ({ toggleDisplayForm, addGuiClient }) => {
   const [form] = Form.useForm()
   const [error, setError] = useState('')
   /* Create request body */
@@ -28,7 +28,8 @@ export const AddClient = ({ toggleDisplayForm }) => {
 
     new CustomerApi()
       .apiCustomerPost(body)
-      .then(() => {
+      .then((response) => {
+        addGuiClient({ ...body.customer, customerId: response.body })
         toggleDisplayForm()
       })
       .catch((err) => {
@@ -111,5 +112,6 @@ export const AddClient = ({ toggleDisplayForm }) => {
 }
 
 AddClient.propTypes = {
-  toggleDisplayForm: PropTypes.func
+  toggleDisplayForm: PropTypes.func,
+  addGuiClient: PropTypes.func
 }
