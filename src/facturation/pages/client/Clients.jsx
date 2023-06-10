@@ -1,55 +1,58 @@
-import { useEffect, useState } from 'react';
-import { AddClient, AddNewButton } from '../../components/';
-import { Button, Space, Table } from 'antd';
-import { CustomerApi } from '../../../services';
-import { deleteClient, findClient, clientTypes } from '../../helpers/client';
-import { EditClient } from '../../components/client/EditClient';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { AddClient, AddNewButton } from '../../components/'
+import { Button, Space, Table } from 'antd'
+import { CustomerApi } from '../../../services'
+import { deleteClient, findClient, clientTypes } from '../../helpers/client'
+import { EditClient } from '../../components/client/EditClient'
+import { Link } from 'react-router-dom'
 
 export const Clients = () => {
-  const [customers, setCustomers] = useState([]);
-  const [editCustomer, setEditCustomer] = useState({});
-  const [error, setError] = useState('');
-  const [displayForm, setDisplayForm] = useState(false);
-  const toggleDisplayForm = () => setDisplayForm((prev) => !prev);
-  const toggleDisplayEditForm = () => setEditCustomer({});
+  const [customers, setCustomers] = useState([])
+  const [editCustomer, setEditCustomer] = useState({})
+  const [error, setError] = useState('')
+  const [displayForm, setDisplayForm] = useState(false)
+  const toggleDisplayForm = () => setDisplayForm((prev) => !prev)
+  const toggleDisplayEditForm = () => setEditCustomer({})
+  const addGuiClient = (client) => {
+    setCustomers((prev) => [{ ...client, key: client.customerId }, ...prev])
+  }
   const updateGuiClient = (customerId, updatedClient) => {
     setCustomers((prev) =>
       prev.map((customer) => {
-        if (customer.customerId !== customerId) return customer;
+        if (customer.customerId !== customerId) return customer
         return {
           key: customer.key,
           customerId,
-          ...updatedClient,
-        };
-      }),
-    );
-  };
+          ...updatedClient
+        }
+      })
+    )
+  }
   const tableColumns = [
     {
       title: 'Name',
       dataIndex: 'name',
-      key: 'name',
+      key: 'name'
     },
     {
       title: 'Address',
       dataIndex: 'address',
-      key: 'address',
+      key: 'address'
     },
     {
       title: 'RTN',
       dataIndex: 'rtn',
-      key: 'rtn',
+      key: 'rtn'
     },
     {
       title: 'Phone',
       dataIndex: 'phoneNumber',
-      key: 'phoneNumber',
+      key: 'phoneNumber'
     },
     {
       title: 'Type',
       key: 'customerType',
-      render: (_, record) => <>{clientTypes[record.customerType].value}</>,
+      render: (_, record) => <>{clientTypes[record.customerType].value}</>
     },
     {
       title: 'Action',
@@ -66,15 +69,17 @@ export const Clients = () => {
             type="primary"
             icon={<span className="material-symbols-outlined">delete</span>}
             size="large"
-            onClick={() => deleteClient(record.customerId, setCustomers)}
+            onClick={() => {
+              deleteClient(record.customerId, setCustomers)
+            }}
           />
           <Link to={`/clients/${record.customerId}/invoices`}>
             <span className="material-symbols-outlined">receipt_long</span>
           </Link>
         </Space>
-      ),
-    },
-  ];
+      )
+    }
+  ]
 
   /* Load customers from API get endpoint */
   useEffect(() => {
@@ -84,21 +89,23 @@ export const Clients = () => {
         /* Add key property to each customer */
         const customersWithKey = body.map((customer) => ({
           ...customer,
-          key: customer.customerId,
-        }));
-        setCustomers(customersWithKey);
+          key: customer.customerId
+        }))
+        setCustomers(customersWithKey)
       })
       .catch((err) => {
-        setError(err);
-      });
-  }, []);
+        setError(err)
+      })
+  }, [])
 
   return (
     <section className="container">
       <AddNewButton toggleFormPopup={toggleDisplayForm} />
       <Table dataSource={customers} columns={tableColumns} />
       {error !== '' && <p>{error}</p>}
-      {displayForm && <AddClient toggleDisplayForm={toggleDisplayForm} />}
+      {displayForm && (
+        <AddClient toggleDisplayForm={toggleDisplayForm} addGuiClient={addGuiClient} />
+      )}
       {Object.keys(editCustomer).length !== 0 && (
         <EditClient
           client={editCustomer}
@@ -107,5 +114,5 @@ export const Clients = () => {
         />
       )}
     </section>
-  );
-};
+  )
+}
