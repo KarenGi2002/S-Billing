@@ -47,7 +47,7 @@ export const Invoices = () => {
               deleteInvoice(record.invoiceId, setInvoices)
             }}
           />
-          <Link to={`/clients/${client_id}/invoices/${record.invoiceId}`}>
+          <Link to={`/clients/${client_id}/invoices/${record.invoiceId}/products`}>
             <span className="material-symbols-outlined">inventory</span>
           </Link>
         </Space>
