@@ -2,15 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Navbar } from './facturation/components'
-import {
-  ErrorPage,
-  Articles,
-  Clients,
-  Inventories,
-  Invoices,
-  Reports,
-  Invoice
-} from './facturation/pages'
+import { ErrorPage, Articles, Clients, Inventories, Invoices, Invoice } from './facturation/pages'
 import { Login, Signup } from './auth/pages'
 import './index.css'
 import 'antd/dist/reset.css'
@@ -38,15 +30,11 @@ const router = createBrowserRouter([
         element: <Inventories />
       },
       {
-        path: '/reports',
-        element: <Reports />
-      },
-      {
-        path: '/reports/:report_id/invoices',
+        path: '/invoices',
         element: <Invoices />
       },
       {
-        path: '/reports/:report_id/invoices/:invoice_id',
+        path: '/invoices/:invoice_id',
         element: <Invoice />
       }
     ]

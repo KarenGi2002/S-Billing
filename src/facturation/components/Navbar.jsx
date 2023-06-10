@@ -14,9 +14,9 @@ const items = [
     icon: <span className="material-symbols-outlined">group</span>
   },
   {
-    label: <NavLink to="/reports">Reports</NavLink>,
-    key: 'reports',
-    icon: <span className="material-symbols-outlined">lab_profile</span>
+    label: <NavLink to="/invoices">Invoices</NavLink>,
+    key: 'invoices',
+    icon: <span className="material-symbols-outlined">receipt_long</span>
   },
   {
     label: <NavLink to="/login">Logout</NavLink>,
