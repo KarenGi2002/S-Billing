@@ -69,6 +69,46 @@ export default class InventoryApi {
     }
 
     /**
+     * Callback function to receive the result of the apiInventoryIdArticlesGet operation.
+     * @callback module:api/InventoryApi~apiInventoryIdArticlesGetCallback
+     * @param {String} error Error message, if any.
+     * @param data This operation does not return a value.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * @param {String} id 
+     * @param {module:api/InventoryApi~apiInventoryIdArticlesGetCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    apiInventoryIdArticlesGet(id, callback) {
+      let postBody = null;
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling apiInventoryIdArticlesGet");
+      }
+
+      let pathParams = {
+        'id': id
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = [];
+      let returnType = null;
+      return this.apiClient.callApi(
+        '/api/Inventory/{id}/articles', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the apiInventoryIdDelete operation.
      * @callback module:api/InventoryApi~apiInventoryIdDeleteCallback
      * @param {String} error Error message, if any.
@@ -103,6 +143,49 @@ export default class InventoryApi {
       let returnType = null;
       return this.apiClient.callApi(
         '/api/Inventory/{id}', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiInventoryIdPut operation.
+     * @callback module:api/InventoryApi~apiInventoryIdPutCallback
+     * @param {String} error Error message, if any.
+     * @param data This operation does not return a value.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * @param {String} id 
+     * @param {Object} opts Optional parameters
+     * @param {module:model/Inventory} [inventory] 
+     * @param {module:api/InventoryApi~apiInventoryIdPutCallback} callback The callback function, accepting three arguments: error, data, response
+     */
+    apiInventoryIdPut(id, opts, callback) {
+      opts = opts || {};
+      let postBody = opts['inventory'];
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling apiInventoryIdPut");
+      }
+
+      let pathParams = {
+        'id': id
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = ['application/json', 'text/json', 'application/*+json'];
+      let accepts = [];
+      let returnType = null;
+      return this.apiClient.callApi(
+        '/api/Inventory/{id}', 'PUT',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

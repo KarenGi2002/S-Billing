@@ -19,7 +19,6 @@ import CustomerTypes from './model/CustomerTypes';
 import Inventory from './model/Inventory';
 import Invoice from './model/Invoice';
 import Product from './model/Product';
-import Report from './model/Report';
 import User from './model/User';
 import ArticleApi from './api/ArticleApi';
 import CustomerApi from './api/CustomerApi';
@@ -27,7 +26,6 @@ import HomeApi from './api/HomeApi';
 import InventoryApi from './api/InventoryApi';
 import InvoiceApi from './api/InvoiceApi';
 import ProductApi from './api/ProductApi';
-import ReportApi from './api/ReportApi';
 import UserApi from './api/UserApi';
 
 
@@ -106,12 +104,6 @@ export {
     Product,
 
     /**
-     * The Report model constructor.
-     * @property {module:model/Report}
-     */
-    Report,
-
-    /**
      * The User model constructor.
      * @property {module:model/User}
      */
@@ -152,12 +144,6 @@ export {
     * @property {module:api/ProductApi}
     */
     ProductApi,
-
-    /**
-    * The ReportApi service constructor.
-    * @property {module:api/ReportApi}
-    */
-    ReportApi,
 
     /**
     * The UserApi service constructor.

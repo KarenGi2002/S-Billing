@@ -496,21 +496,21 @@ class ApiClient {
     }
 
     // request.end((error, response) => {
-    //   if (callback) {
-    //     var data = null;
-    //     if (!error) {
-    //       try {
-    //         data = this.deserialize(response, returnType);
-    //         if (this.enableCookies && typeof window === 'undefined') {
-    //           this.agent._saveCookies(response);
+    //     if (callback) {
+    //         var data = null;
+    //         if (!error) {
+    //             try {
+    //                 data = this.deserialize(response, returnType);
+    //                 if (this.enableCookies && typeof window === 'undefined'){
+    //                     this.agent._saveCookies(response);
+    //                 }
+    //             } catch (err) {
+    //                 error = err;
+    //             }
     //         }
-    //       } catch (err) {
-    //         error = err;
-    //       }
-    //     }
 
-    //     callback(error, data, response);
-    //   }
+    //         callback(error, data, response);
+    //     }
     // });
 
     return request;

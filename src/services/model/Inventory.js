@@ -23,10 +23,11 @@ class Inventory {
     /**
      * Constructs a new <code>Inventory</code>.
      * @alias module:model/Inventory
+     * @param name {String} 
      */
-    constructor() { 
+    constructor(name) { 
         
-        Inventory.initialize(this);
+        Inventory.initialize(this, name);
     }
 
     /**
@@ -34,7 +35,8 @@ class Inventory {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj) { 
+    static initialize(obj, name) { 
+        obj['name'] = name;
     }
 
     /**
@@ -51,8 +53,11 @@ class Inventory {
             if (data.hasOwnProperty('inventoryId')) {
                 obj['inventoryId'] = ApiClient.convertToType(data['inventoryId'], 'String');
             }
-            if (data.hasOwnProperty('article')) {
-                obj['article'] = ApiClient.convertToType(data['article'], [Article]);
+            if (data.hasOwnProperty('name')) {
+                obj['name'] = ApiClient.convertToType(data['name'], 'String');
+            }
+            if (data.hasOwnProperty('articles')) {
+                obj['articles'] = ApiClient.convertToType(data['articles'], [Article]);
             }
         }
         return obj;
@@ -64,19 +69,29 @@ class Inventory {
      * @return {boolean} to indicate whether the JSON data is valid with respect to <code>Inventory</code>.
      */
     static validateJSON(data) {
+        // check to make sure all required properties are present in the JSON string
+        for (const property of Inventory.RequiredProperties) {
+            if (!data[property]) {
+                throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
+            }
+        }
         // ensure the json data is a string
         if (data['inventoryId'] && !(typeof data['inventoryId'] === 'string' || data['inventoryId'] instanceof String)) {
             throw new Error("Expected the field `inventoryId` to be a primitive type in the JSON string but got " + data['inventoryId']);
         }
-        if (data['article']) { // data not null
+        // ensure the json data is a string
+        if (data['name'] && !(typeof data['name'] === 'string' || data['name'] instanceof String)) {
+            throw new Error("Expected the field `name` to be a primitive type in the JSON string but got " + data['name']);
+        }
+        if (data['articles']) { // data not null
             // ensure the json data is an array
-            if (!Array.isArray(data['article'])) {
-                throw new Error("Expected the field `article` to be an array in the JSON data but got " + data['article']);
+            if (!Array.isArray(data['articles'])) {
+                throw new Error("Expected the field `articles` to be an array in the JSON data but got " + data['articles']);
             }
-            // validate the optional field `article` (array)
-            for (const item of data['article']) {
+            // validate the optional field `articles` (array)
+            for (const item of data['articles']) {
                 Article.validateJSON(item);
-            }
+            };
         }
 
         return true;
@@ -85,7 +100,7 @@ class Inventory {
 
 }
 
-
+Inventory.RequiredProperties = ["name"];
 
 /**
  * @member {String} inventoryId
@@ -93,9 +108,14 @@ class Inventory {
 Inventory.prototype['inventoryId'] = undefined;
 
 /**
- * @member {Array.<module:model/Article>} article
+ * @member {String} name
  */
-Inventory.prototype['article'] = undefined;
+Inventory.prototype['name'] = undefined;
+
+/**
+ * @member {Array.<module:model/Article>} articles
+ */
+Inventory.prototype['articles'] = undefined;
 
 
 
