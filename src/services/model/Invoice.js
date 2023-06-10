@@ -14,7 +14,6 @@
 import ApiClient from '../ApiClient';
 import Customer from './Customer';
 import Product from './Product';
-import Report from './Report';
 
 /**
  * The Invoice model module.
@@ -53,9 +52,6 @@ class Invoice {
             if (data.hasOwnProperty('invoiceId')) {
                 obj['invoiceId'] = ApiClient.convertToType(data['invoiceId'], 'String');
             }
-            if (data.hasOwnProperty('reportId')) {
-                obj['reportId'] = ApiClient.convertToType(data['reportId'], 'String');
-            }
             if (data.hasOwnProperty('customerId')) {
                 obj['customerId'] = ApiClient.convertToType(data['customerId'], 'String');
             }
@@ -70,9 +66,6 @@ class Invoice {
             }
             if (data.hasOwnProperty('creationDate')) {
                 obj['creationDate'] = ApiClient.convertToType(data['creationDate'], 'Date');
-            }
-            if (data.hasOwnProperty('report')) {
-                obj['report'] = Report.constructFromObject(data['report']);
             }
             if (data.hasOwnProperty('customer')) {
                 obj['customer'] = Customer.constructFromObject(data['customer']);
@@ -95,16 +88,8 @@ class Invoice {
             throw new Error("Expected the field `invoiceId` to be a primitive type in the JSON string but got " + data['invoiceId']);
         }
         // ensure the json data is a string
-        if (data['reportId'] && !(typeof data['reportId'] === 'string' || data['reportId'] instanceof String)) {
-            throw new Error("Expected the field `reportId` to be a primitive type in the JSON string but got " + data['reportId']);
-        }
-        // ensure the json data is a string
         if (data['customerId'] && !(typeof data['customerId'] === 'string' || data['customerId'] instanceof String)) {
             throw new Error("Expected the field `customerId` to be a primitive type in the JSON string but got " + data['customerId']);
-        }
-        // validate the optional field `report`
-        if (data['report']) { // data not null
-          Report.validateJSON(data['report']);
         }
         // validate the optional field `customer`
         if (data['customer']) { // data not null
@@ -118,7 +103,7 @@ class Invoice {
             // validate the optional field `products` (array)
             for (const item of data['products']) {
                 Product.validateJSON(item);
-            }
+            };
         }
 
         return true;
@@ -133,11 +118,6 @@ class Invoice {
  * @member {String} invoiceId
  */
 Invoice.prototype['invoiceId'] = undefined;
-
-/**
- * @member {String} reportId
- */
-Invoice.prototype['reportId'] = undefined;
 
 /**
  * @member {String} customerId
@@ -163,11 +143,6 @@ Invoice.prototype['total'] = undefined;
  * @member {Date} creationDate
  */
 Invoice.prototype['creationDate'] = undefined;
-
-/**
- * @member {module:model/Report} report
- */
-Invoice.prototype['report'] = undefined;
 
 /**
  * @member {module:model/Customer} customer
