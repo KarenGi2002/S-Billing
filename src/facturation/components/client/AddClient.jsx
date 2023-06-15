@@ -31,12 +31,10 @@ export const AddClient = ({ toggleDisplayForm, addGuiClient }) => {
       .then((response) => {
         addGuiClient({ ...body.customer, customerId: response.body })
         toggleDisplayForm()
+        alert('Customer has been added successfully!')
       })
       .catch((err) => {
         setError(err)
-      })
-      .finally(() => {
-        alert('Customer has been added successfully!')
       })
   }
 
@@ -57,7 +55,7 @@ export const AddClient = ({ toggleDisplayForm, addGuiClient }) => {
         >
           <Input placeholder="e.g.: Camilo" type="text" />
         </Form.Item>
-        <Form.Item label="Address" name="address" tooltip="This is a required field">
+        <Form.Item label="Address" name="address">
           <Input placeholder="e.g.: Neighborhood Street No. 5" type="text" />
         </Form.Item>
         <Form.Item
@@ -112,6 +110,6 @@ export const AddClient = ({ toggleDisplayForm, addGuiClient }) => {
 }
 
 AddClient.propTypes = {
-  toggleDisplayForm: PropTypes.func,
-  addGuiClient: PropTypes.func
+  toggleDisplayForm: PropTypes.func.isRequired,
+  addGuiClient: PropTypes.func.isRequired
 }
