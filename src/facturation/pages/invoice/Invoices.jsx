@@ -96,7 +96,7 @@ export const Invoices = () => {
         setInvoices(invoicesWithKey)
       })
       .catch((err) => {
-        setError(err)
+        setError(err.message)
       })
   }, [])
 
