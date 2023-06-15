@@ -1,32 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Button, Space, Table } from 'antd'
 import { AddClient, AddNewButton, EditClient } from '../../components/'
-import { CustomerApi } from '../../../services'
-import { deleteClient, findClient, clientTypes } from '../../helpers/client'
-import { Link } from 'react-router-dom'
+import { findClient, clientTypes } from '../../helpers/client'
+import { useNavigate } from 'react-router-dom'
+import { ClientContext } from '../../context/client/ClientContext'
 
 export const Clients = () => {
-  const [customers, setCustomers] = useState([])
+  const {
+    customers, loadClients, onDeleteClient, onAddClient, onUpdateClient, onClientInvoicesOpen,
+  } = useContext(ClientContext)
+  const navigate = useNavigate()
   const [editCustomer, setEditCustomer] = useState({})
-  const [error, setError] = useState('')
   const [displayForm, setDisplayForm] = useState(false)
   const toggleDisplayForm = () => setDisplayForm((prev) => !prev)
   const toggleDisplayEditForm = () => setEditCustomer({})
-  const addGuiClient = (client) => {
-    setCustomers((prev) => [{ ...client, key: client.customerId }, ...prev])
-  }
-  const updateGuiClient = (customerId, updatedClient) => {
-    setCustomers((prev) =>
-      prev.map((customer) => {
-        if (customer.customerId !== customerId) return customer
-        return {
-          key: customer.key,
-          customerId,
-          ...updatedClient
-        }
-      })
-    )
-  }
   const tableColumns = [
     {
       title: 'Name',
@@ -69,47 +56,39 @@ export const Clients = () => {
             icon={<span className="material-symbols-outlined">delete</span>}
             size="large"
             onClick={() => {
-              deleteClient(record.customerId, setCustomers)
+              if (!confirm(`Are you sure you want to delete customer ${record.name}`)) return
+              onDeleteClient(record.customerId)
             }}
           />
-          <Link to={`/clients/${record.customerId}/invoices`}>
-            <span className="material-symbols-outlined">receipt_long</span>
-          </Link>
+          <Button
+            type="primary"
+            icon={<span className="material-symbols-outlined">receipt_long</span>}
+            size="large"
+            onClick={() => {
+              onClientInvoicesOpen(record.customerId)
+              navigate(`/clients/${record.customerId}/invoices`)
+            }}
+          />
         </Space>
       )
     }
   ]
 
   /* Load customers from API get endpoint */
-  useEffect(() => {
-    new CustomerApi()
-      .apiCustomerGet()
-      .then(({ body }) => {
-        /* Add key property to each customer */
-        const customersWithKey = body.map((customer) => ({
-          ...customer,
-          key: customer.customerId
-        }))
-        setCustomers(customersWithKey)
-      })
-      .catch((err) => {
-        setError(err.message)
-      })
-  }, [])
+  useEffect(() => { loadClients() }, [])
 
   return (
     <section className="container">
       <AddNewButton toggleFormPopup={toggleDisplayForm} />
       <Table dataSource={customers} columns={tableColumns} />
-      {error !== '' && <p>{error}</p>}
       {displayForm && (
-        <AddClient toggleDisplayForm={toggleDisplayForm} addGuiClient={addGuiClient} />
+        <AddClient toggleDisplayForm={toggleDisplayForm} addGuiClient={onAddClient} />
       )}
       {Object.keys(editCustomer).length !== 0 && (
         <EditClient
           client={editCustomer}
           toggleDisplayForm={toggleDisplayEditForm}
-          updateGuiClient={updateGuiClient}
+          updateGuiClient={onUpdateClient}
         />
       )}
     </section>
