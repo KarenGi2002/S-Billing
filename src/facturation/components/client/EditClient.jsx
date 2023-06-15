@@ -33,12 +33,10 @@ export const EditClient = ({ client, toggleDisplayForm, updateGuiClient }) => {
       .then(() => {
         updateGuiClient(customerId, body.customer)
         toggleDisplayForm()
+        alert('Customer has been changed successfully!')
       })
       .catch((err) => {
         setError(err)
-      })
-      .finally(() => {
-        alert('Customer has been changed successfully!')
       })
   }
 
@@ -126,7 +124,7 @@ export const EditClient = ({ client, toggleDisplayForm, updateGuiClient }) => {
 }
 
 EditClient.propTypes = {
-  client: PropTypes.object,
-  toggleDisplayForm: PropTypes.func,
-  updateGuiClient: PropTypes.func
+  client: PropTypes.object.isRequired,
+  toggleDisplayForm: PropTypes.func.isRequired,
+  updateGuiClient: PropTypes.func.isRequired
 }
