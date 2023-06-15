@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { AddClient, AddNewButton } from '../../components/'
 import { Button, Space, Table } from 'antd'
+import { AddClient, AddNewButton, EditClient } from '../../components/'
 import { CustomerApi } from '../../../services'
 import { deleteClient, findClient, clientTypes } from '../../helpers/client'
-import { EditClient } from '../../components/client/EditClient'
 import { Link } from 'react-router-dom'
 
 export const Clients = () => {
@@ -94,7 +93,7 @@ export const Clients = () => {
         setCustomers(customersWithKey)
       })
       .catch((err) => {
-        setError(err)
+        setError(err.message)
       })
   }, [])
 
