@@ -14,6 +14,11 @@ const items = [
     icon: <span className="material-symbols-outlined">group</span>,
   },
   {
+    label: <NavLink to="/invoices">Invoices</NavLink>,
+    key: 'invoices',
+    icon: <span className="material-symbols-outlined">receipt_long</span>,
+  },
+  {
     label: <NavLink to="/login">Logout</NavLink>,
     key: 'login',
     icon: <span className="material-symbols-outlined">logout</span>,
