@@ -40,7 +40,7 @@ export const ClientProvider = ({ children }) => {
     localStorage.setItem('currentUser', JSON.stringify(current))
   }
 
-  const onProductsPageLoad = useCallback((clientId) => {
+  const loadCurrentUser = useCallback((clientId) => {
     // if user access products page and theres no current user
     if (currentUserState?.currentUser?.customerType !== undefined) return
     // try to find the current user in the customers array
@@ -80,20 +80,20 @@ export const ClientProvider = ({ children }) => {
     dispatch({ type: customerTypes.update, payload: {customerId, updatedClient} })
   }, [])
 
-  const onClientInvoicesOpen = useCallback((clientId) => {
+  const setCurrentFromId = useCallback((clientId) => {
     dispatch({ type: customerTypes.setFoundCurrent, payload: clientId })
   }, [])
   
   const providerValue = useMemo(() => ({
     ...currentUserState,
     loadClients,
-    onProductsPageLoad,
+    loadCurrentUser,
     onDeleteClient,
     onAddClient,
     onUpdateClient,
-    onClientInvoicesOpen
+    setCurrentFromId
   }), [
-    currentUserState, loadClients, onProductsPageLoad, onDeleteClient, onAddClient, onUpdateClient, onClientInvoicesOpen
+    currentUserState, loadClients, loadCurrentUser, onDeleteClient, onAddClient, onUpdateClient, setCurrentFromId
   ])
   
   return (
