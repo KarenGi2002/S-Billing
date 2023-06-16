@@ -31,11 +31,11 @@ const router = createBrowserRouter([
         element: <Inventories />
       },
       {
-        path: '/clients/:client_id/invoices',
+        path: '/invoices',
         element: <Invoices />
       },
       {
-        path: '/clients/:client_id/invoices/:invoice_id/products',
+        path: '/invoices/:invoice_id/products',
         element: <Invoice />
       }
     ]
