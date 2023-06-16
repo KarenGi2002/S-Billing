@@ -1,93 +1,59 @@
 import { useContext, useEffect, useState } from 'react'
-import { Button, Space, Table } from 'antd'
-import { AddClient, AddNewButton, EditClient } from '../../components/'
+import { Space, Table } from 'antd'
+import { AddClient, AddNewButton, EditClient, TableButton } from '../../components/'
 import { findClient, clientTypes } from '../../helpers/client'
-import { useNavigate } from 'react-router-dom'
 import { ClientContext } from '../../context/client/ClientContext'
+import { createTableColumns } from '../../helpers/createTableColumns'
 
 export const Clients = () => {
   const {
-    customers, loadClients, onDeleteClient, onAddClient, onUpdateClient, onClientInvoicesOpen,
+    customers, loadClients, onDeleteClient, onAddClient, onUpdateClient,
   } = useContext(ClientContext)
-  const navigate = useNavigate()
-  const [editCustomer, setEditCustomer] = useState({})
-  const [displayForm, setDisplayForm] = useState(false)
-  const toggleDisplayForm = () => setDisplayForm((prev) => !prev)
-  const toggleDisplayEditForm = () => setEditCustomer({})
-  const tableColumns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name'
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address'
-    },
-    {
-      title: 'RTN',
-      dataIndex: 'rtn',
-      key: 'rtn'
-    },
-    {
-      title: 'Phone',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber'
-    },
-    {
-      title: 'Type',
-      key: 'customerType',
-      render: (_, record) => <>{clientTypes[record.customerType].value}</>
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            icon={<span className="material-symbols-outlined">edit</span>}
-            size="large"
-            onClick={() => setEditCustomer(findClient(record.customerId, customers))}
-          />
-          <Button
-            type="primary"
-            icon={<span className="material-symbols-outlined">delete</span>}
-            size="large"
-            onClick={() => {
-              if (!confirm(`Are you sure you want to delete customer ${record.name}`)) return
-              onDeleteClient(record.customerId)
-            }}
-          />
-          <Button
-            type="primary"
-            icon={<span className="material-symbols-outlined">receipt_long</span>}
-            size="large"
-            onClick={() => {
-              onClientInvoicesOpen(record.customerId)
-              navigate(`/clients/${record.customerId}/invoices`)
-            }}
-          />
-        </Space>
-      )
-    }
-  ]
+  const [editCustomer, setEditCustomer] = useState({}) // customer to edit
+  const [displayAddForm, setDisplayAddForm] = useState(false)
+  const toggleShowAddForm = () => setDisplayAddForm((prev) => !prev)
+  const toggleShowEditForm = () => setEditCustomer({})
+  const [columns, setColumns] = useState([])
 
   /* Load customers from API get endpoint */
-  useEffect(() => { loadClients() }, [])
+  useEffect(() => {
+    loadClients()
+    setColumns(createTableColumns([
+      { val: 'Name' },
+      { val: 'Address' },
+      { val: 'RTN' },
+      { val: 'Phone number' },
+      {
+        val: 'Customer type',
+        render: (_, record) => clientTypes[record.customerType].value
+      },
+      {
+        val: 'Action',
+        render: (_, record) => (
+          <Space size="middle">
+            <TableButton iconName="edit" handler={() => setEditCustomer(findClient(record.customerId, customers))} />
+            <TableButton
+              iconName="delete"
+              handler={() => {
+                if (!confirm(`Are you sure you want to delete customer ${record.name}`)) return
+                onDeleteClient(record.customerId)
+              }}
+            />
+          </Space>
+        )
+      }
+    ]))
+  }, [loadClients, onDeleteClient])
 
   return (
     <section className="container">
-      <AddNewButton toggleFormPopup={toggleDisplayForm} />
-      <Table dataSource={customers} columns={tableColumns} />
-      {displayForm && (
-        <AddClient toggleDisplayForm={toggleDisplayForm} addGuiClient={onAddClient} />
-      )}
+      <AddNewButton toggleFormPopup={toggleShowAddForm} />
+      <Table dataSource={customers} columns={columns} />
+      {displayAddForm && <AddClient toggleDisplayForm={toggleShowAddForm} addGuiClient={onAddClient} />}
       {Object.keys(editCustomer).length !== 0 && (
         <EditClient
           client={editCustomer}
-          toggleDisplayForm={toggleDisplayEditForm}
+          toggleDisplayForm={toggleShowEditForm}
           updateGuiClient={onUpdateClient}
         />
       )}
