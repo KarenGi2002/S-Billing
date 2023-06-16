@@ -2,14 +2,12 @@ import { useParams } from 'react-router-dom'
 import { AddNewButton } from '../../components'
 import { Button, Space, Table } from 'antd'
 import { deleteProduct } from '../../helpers/products'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { InventoryApi, InvoiceApi } from '../../../services'
 import { AddProduct } from '../../components/'
-import { ClientContext } from '../../context/client/ClientContext'
 
 export const Invoice = () => {
-  const { client_id, invoice_id } = useParams()
-  const { currentUser, onProductsPageLoad } = useContext(ClientContext)
+  const { invoice_id } = useParams()
   const [products, setProducts] = useState([])
   const [inventories, setInventories] = useState([])
   // const [editProduct, setEditProduct] = useState({})
@@ -18,7 +16,6 @@ export const Invoice = () => {
   const toggleDisplayForm = () => setDisplayForm((prev) => !prev)
   // const toggleDisplayEditForm = () => setEditProduct({})
   useEffect(() => {
-    onProductsPageLoad(client_id) // check if the current user has already been loaded, if not, load it
     /* Load products from API get endpoint */
     new InvoiceApi()
       .apiInvoiceIdProductsGet(invoice_id)
