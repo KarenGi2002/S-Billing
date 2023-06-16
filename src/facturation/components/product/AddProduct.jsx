@@ -3,33 +3,26 @@ import PropTypes from 'prop-types'
 import { ProductApi } from '../../../services'
 import { useState } from 'react'
 import { Popup } from '../Popup'
+import { findArticleInInventory } from '../../helpers/article/'
 
 export const AddProduct = ({ toggleDisplayForm, addGuiProduct, invoiceId, inventories }) => {
   const [form] = Form.useForm()
-  const [error, setError] = useState('')
-  const [selectedArticle, setSelectedArticle] = useState(inventories[0].options[0])
-
-  const findArticleInInventory = (value) => {
-    for (let inventory of inventories) {
-      const result = inventory.options.find((article) => article.value === value)
-      if (result === undefined) continue
-      return result
-    }
-    return inventories[0].options[0]
-  }
-
-  const handleArticleChanged = (val) => {
-    setSelectedArticle(findArticleInInventory(val))
-  }
-
+  const defaultArticle = inventories[0].options[0]
+  const [articleSelect, setArticleSelect] = useState(defaultArticle)
+  const handleArticleChanged = (val) => { setArticleSelect(findArticleInInventory(val)) }
+  
   const onFinish = (values) => {
     const body = {
       product: {
         ...values,
         invoiceId,
-        articleId: selectedArticle.articleId
+        price: articleSelect?.costPrice + (articleSelect?.costPrice * 0.12),
+        articleId: articleSelect.articleId
       }
     }
+    const { price, amount } = body.product
+    body.product.total = price * amount
+
     new ProductApi()
       .apiProductPost(body)
       .then((response) => {
@@ -37,8 +30,8 @@ export const AddProduct = ({ toggleDisplayForm, addGuiProduct, invoiceId, invent
         toggleDisplayForm()
         alert('Product has been added successfully!')
       })
-      .catch((err) => {
-        setError(err)
+      .catch(() => {
+        alert('Error adding product to database, please try again later.')
       })
   }
 
@@ -58,17 +51,15 @@ export const AddProduct = ({ toggleDisplayForm, addGuiProduct, invoiceId, invent
         >
           <Select
             name="article"
-            style={{
-              width: '100%'
-            }}
+            style={{ width: '100%' }}
             placeholder="Article"
-            defaultValue={inventories[0].options[0]}
+            defaultValue={defaultArticle}
             onChange={handleArticleChanged}
             options={inventories}
           />
         </Form.Item>
         <Form.Item
-          label={`Amount (${selectedArticle.stockQuantity} ${selectedArticle.name} in stock)`}
+          label={`Amount (${articleSelect.stockQuantity} ${articleSelect.name} in stock)`}
           name="amount"
           required
           tooltip="This is a required field"
@@ -84,12 +75,10 @@ export const AddProduct = ({ toggleDisplayForm, addGuiProduct, invoiceId, invent
               width: '100%'
             }}
             min={1}
-            max={selectedArticle.stockQuantity}
+            max={articleSelect.stockQuantity}
           />
         </Form.Item>
         <Form.Item style={{ marginBottom: 0 }}>
-          {/* Display error message */}
-          {error !== '' && <p>{error}</p>}
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
@@ -103,5 +92,5 @@ AddProduct.propTypes = {
   toggleDisplayForm: PropTypes.func.isRequired,
   addGuiProduct: PropTypes.func.isRequired,
   invoiceId: PropTypes.string.isRequired,
-  inventories: PropTypes.arrayOf(PropTypes.object)
+  inventories: PropTypes.arrayOf(PropTypes.object),
 }
