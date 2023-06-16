@@ -8,7 +8,6 @@ import { InvoiceApi } from '../../../services'
 export const Invoices = () => {
   const { client_id } = useParams()
   const [invoices, setInvoices] = useState([])
-  const [error, setError] = useState('')
   const addGuiInvoice = (invoice) => {
     setInvoices((prev) => [{ ...invoice, key: invoice.invoiceId }, ...prev])
   }
@@ -47,7 +46,7 @@ export const Invoices = () => {
               deleteInvoice(record.invoiceId, setInvoices)
             }}
           />
-          <Link to={`/clients/${client_id}/invoices/${record.invoiceId}/products`}>
+          <Link to={`/invoices/${record.invoiceId}/products`}>
             <span className="material-symbols-outlined">inventory</span>
           </Link>
         </Space>
@@ -74,12 +73,10 @@ export const Invoices = () => {
           invoiceId: response.body.invoiceId,
           creationDate: splittedDate.slice(0, splittedDate.length - 1).join('-')
         })
-      })
-      .catch((err) => {
-        setError(err)
-      })
-      .finally(() => {
         alert('Invoice has been added successfully!')
+      })
+      .catch(() => {
+        alert('Error adding invoice to the database, please try again later.')
       })
   }
 
@@ -95,8 +92,8 @@ export const Invoices = () => {
         }))
         setInvoices(invoicesWithKey)
       })
-      .catch((err) => {
-        setError(err.message)
+      .catch(() => {
+        alert('Error reading invoices from the database, please try again later.')
       })
   }, [])
 
@@ -104,7 +101,6 @@ export const Invoices = () => {
     <section className="container">
       <AddNewButton toggleFormPopup={postInvoice} />
       <Table dataSource={invoices} columns={tableColumns} />
-      {error !== '' && <p>{error}</p>}
     </section>
   )
 }
