@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { AddNewButton } from '../../components'
+import { AddNewButton, EditInventory,  } from '../../components'
 import { InventoryApi } from '../../../services'
 import { Button, Space, Table } from 'antd'
+import { findInventory, deleteInventory } from '../../helpers/inventory'
 import { AddInventory } from '../../components/inventory/AddInventory'
 
 export const Inventories = () => {
@@ -15,13 +16,13 @@ export const Inventories = () => {
 setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
   }
 
-  const updateGuiInventory = (InventoryId, updatedInventory) => {
+  const updateGuiInventory = (inventoryId, updatedInventory) => {
     setInventories((prev) =>
-      prev.map((Inventory) => {
-        if (Inventory.InventoryId !== InventoryId) return Inventory
+      prev.map((inventory) => {
+        if (inventory.inventoryId !== inventoryId) return inventory
         return {
-          key: Inventory.key,
-          InventoryId,
+          key: inventory.key,
+          inventoryId,
           ...updatedInventory
         }
       })
@@ -31,11 +32,9 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
     new InventoryApi()
       .apiInventoryGet()
       .then(({ body }) => {
-        console.log(body)
-        /* Add key property to each inventory */
-        const inventoriesWithKey = body.map((inventory) => ({
+           const inventoriesWithKey = body.map((inventory) => ({
           ...inventory,
-          amount: inventory.articles["$values"].length,
+          amount: inventory.name,
           key: inventory.inventoryId
         }))
         setInventories(inventoriesWithKey)
@@ -45,9 +44,7 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
       })
   }, [])
 
-
-
-
+  
   const tableColumns = [
     {
       title: 'Name',
@@ -68,12 +65,18 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
             type="primary"
             icon={<span className="material-symbols-outlined">edit</span>}
             size="large"
+            onClick={() => setEditInventory(findInventory(record.inventoryId, inventories))}
           />
           <Button
             type="primary"
             icon={<span className="material-symbols-outlined">delete</span>}
             size="large"
+            onClick={() => {deleteInventory(record.inventoryId, setInventories)}}
+            
           />
+          {/* <Link to={`/inventiry/${record.inventoryId}/article`}>
+            <span className="material-symbols-outlined">receipt_long</span>
+          </Link> */}
         </Space>
       )
     }
@@ -86,8 +89,15 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
       <AddNewButton toggleFormPopup={toggleDisplayForm} />
       <Table dataSource={inventories} columns={tableColumns} />
       {error !== '' && <p>{error}</p>}
-      {displayForm && <AddInventory toggleDisplayForm={toggleDisplayForm} addGuiInventory={addGuiInventory}/>}
-      
+      {displayForm && ( 
+      <AddInventory toggleDisplayForm={toggleDisplayForm} addGuiInventory={addGuiInventory}/>)}
+      {Object.keys(editInventory).length !== 0 && (
+        <EditInventory
+          inventory={editInventory}
+          toggleDisplayForm={toggleDisplayEditForm}
+          updateGuiInventory={updateGuiInventory}
+        />
+      )}
     </section>
   )
 }
