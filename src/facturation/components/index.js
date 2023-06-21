@@ -10,3 +10,6 @@ export * from './product/EditProduct'
 
 export* from  './inventory/AddInventory'
 export* from  './inventory/EditInventory'
+
+export* from './articles/AddArticle'
+export* from './articles/EditArticle'
