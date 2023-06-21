@@ -1,5 +1,4 @@
 export * from './ErrorPage'
-
 export * from './article/Articles'
 export * from './client/Clients'
 export * from './inventory/Inventories'

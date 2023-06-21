@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { AddNewButton, EditInventory,  } from '../../components'
 import { InventoryApi } from '../../../services'
-import { Button, Space, Table } from 'antd'
+import { Button, Space, Table, } from 'antd'
 import { findInventory, deleteInventory } from '../../helpers/inventory'
 import { AddInventory } from '../../components/inventory/AddInventory'
+import { Link } from 'react-router-dom'
 
 export const Inventories = () => {
   const [inventories, setInventories] = useState([])
@@ -74,9 +75,9 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
             onClick={() => {deleteInventory(record.inventoryId, setInventories)}}
             
           />
-          {/* <Link to={`/inventiry/${record.inventoryId}/article`}>
+           <Link to={`/inventories/${record.inventoryId}/Articles`}>
             <span className="material-symbols-outlined">receipt_long</span>
-          </Link> */}
+          </Link> 
         </Space>
       )
     }
