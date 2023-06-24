@@ -1,7 +1,7 @@
 # Billing
 
 Pasos para correr el proyecto:
-```
+
 1- Instalar las dependencias del proyecto
 ```
 Ejecutar el npm install 
