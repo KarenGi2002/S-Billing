@@ -97,8 +97,7 @@ setArticles((prev) => [{...article, key: article?.articleId}, ...prev])
       <AddNewButton toggleFormPopup={toggleDisplayForm} />
       <Table dataSource={articles} columns={tableColumns} />
       {error !== '' && <p>{error}</p>}
-      {displayForm && ( 
-      <AddArticle toggleDisplayForm={toggleDisplayForm} addGuiArticle={addGuiArticle} messageApi={messageApi}/>)}
+      {displayForm && (<AddArticle toggleDisplayForm={toggleDisplayForm} addGuiArticle={addGuiArticle} messageApi={messageApi}/>)}
       {Object.keys(editArticle).length !== 0 && (
         <EditArticle
           article={editArticle}

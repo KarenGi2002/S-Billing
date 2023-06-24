@@ -18,25 +18,24 @@ article: {
 
 
   const onFinish = (values) => {
-    const { articleId, inventoryId, ...rest } = values;
+    const { articleId, ...rest } = values;
  
      body.article = {
       ...rest,
- 
+
        }
 
     new ArticleApi()
       .apiArticleIdPut(articleId, body)
       .then(() => {
         updateGuiArticle(articleId, body.article)
-        console.log(body);
-        toggleDisplayForm()
+          toggleDisplayForm()
         messageApi.open({
           type: 'success',
           content: 'Article has been change successfully!',
         });
       })
-      .catch((err) => {
+      .catch(() => {
         messageApi.open({
           type: 'error',
           content: 'Couldn\'t update article to database',
