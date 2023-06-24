@@ -19,7 +19,8 @@ export const AddInventory = ({ toggleDisplayForm, addGuiInventory }) => {
     new InventoryApi()
       .apiInventoryPost(body)
       .then(({text}) => {
-       addGuiInventory({...body.inventory,inventoryId:text, amount:0})
+        const newtext = text.replace(/"/g,"")
+       addGuiInventory({...body.inventory,inventoryId:newtext, amount:0})
 
         toggleDisplayForm()
         alert('Inventory has been created successfully!')
