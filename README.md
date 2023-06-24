@@ -1,12 +1,13 @@
 # Billing
 
-Pasos para correr el proyecto:
+Pasos para correr el proyecto desde el terminal:
 
-1- Instalar las dependencias del proyecto
+1- Instalar las dependencias del proyecto  
 ```
-Ejecutar el npm install 
+ npm install 
 
-2- Para correr el poyecto
+
+2- Para correr el poyecto necesitas ejecutar el siguiente comando 
 ```
 npm run dev
 
