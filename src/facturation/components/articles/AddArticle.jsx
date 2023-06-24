@@ -26,8 +26,9 @@ export const AddArticle = ({ toggleDisplayForm, addGuiArticle, messageApi }) => 
     new ArticleApi()
       .apiArticlePost(body)
       .then(({text}) => {
-       addGuiArticle({...body.article,articleId:text, key:text})
-            toggleDisplayForm()
+        const newtext = text.replace(/"/g,"")
+        addGuiArticle({...body.article, articleId:newtext, key:newtext})
+        toggleDisplayForm()
         messageApi.open({
           type: 'success',
           content: 'Article has been added successfully!',
