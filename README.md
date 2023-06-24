@@ -36,29 +36,4 @@ npm run dev
 - Permitir actualizar el cliente (boton: 'actualizar' en cada cliente)
 - Por cada cliente mostrar (nombre, rtn, direccion, numero de telefono, tipo de cliente)
 
-/reportes
-
-- Mostrar todos los reportes
-- Permitir crear reportes (boton: 'crear reporte')
-- Permitir eliminar reportes (boton: 'eliminar' en cada reporte)
-- Permitir actualizar reportes (boton: 'actualizar' en cada reporte)
-- Por cada reporte mostrar (titulo, contenido, total facturas)
-
-/reportes/:reporte_id/facturas
-
-- Mostrar todas las facturas que tiene
-- Permitir agregar facturas (boton: 'agregar factura')
-- Permitir eliminar una factura (boton: 'eliminar' en cada factura)
-- Permitir actualizar las facturas (boton: 'actualizar' en cada factura)
-- Por cada factura mostrar (cliente al que pertenece, subtotal, ISV, total, fecha de creacion)
-
-/reportes/:reporte_id/facturas/:factura_id
-
-- Mostrar el cliente al que pertenece la factura
-- Mostrar todos los productos de la factura
-- Permitir agregar productos a la factura (boton: 'agregar producto')
-- Permitir eliminar productos de la factura
-- Permitir actualizar productos de la factura
-- Por cada producto mostrar (nombre, cantidad, precio, total)
-
 
