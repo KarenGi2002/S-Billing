@@ -1,2 +1,1 @@
-export * from './deleteArticle'
-export * from './findArticle'
+export * from './findArticleInInventory.js'

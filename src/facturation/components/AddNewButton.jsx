@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { Button } from 'antd'
 
-export const AddNewButton = ({ toggleFormPopup }) => {
+export const AddNewButton = ({ toggleFormPopup, disabled = false }) => {
   return (
     <Button
       type="primary"
@@ -14,6 +14,7 @@ export const AddNewButton = ({ toggleFormPopup }) => {
         marginBlock: '1rem'
       }}
       onClick={toggleFormPopup}
+      disabled={disabled}
     >
       New
       <span className="material-symbols-outlined">add</span>
@@ -22,5 +23,6 @@ export const AddNewButton = ({ toggleFormPopup }) => {
 }
 
 AddNewButton.propTypes = {
-  toggleFormPopup: PropTypes.func
+  toggleFormPopup: PropTypes.func.isRequired,
+  disabled: PropTypes.bool
 }

@@ -6,6 +6,7 @@ import { ErrorPage, Articles, Clients, Inventories, Invoices, Invoice } from './
 import { Login, Signup } from './auth/pages'
 import './index.css'
 import 'antd/dist/reset.css'
+import { ClientProvider } from './facturation/context/client/ClientProvider'
 
 const router = createBrowserRouter([
   {
@@ -30,11 +31,11 @@ const router = createBrowserRouter([
         element: <Inventories />
       },
       {
-        path: '/clients/:client_id/invoices',
+        path: '/invoices',
         element: <Invoices />
       },
       {
-        path: '/clients/:client_id/invoices/:invoice_id/products',
+        path: '/invoices/:invoice_id/products',
         element: <Invoice />
       }
     ]
@@ -52,6 +53,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ClientProvider>
+      <RouterProvider router={router} />
+    </ClientProvider>
   </React.StrictMode>
 )
