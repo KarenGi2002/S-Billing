@@ -1,5 +1,15 @@
 # Billing
 
+Pasos para correr el proyecto:
+1- Instalar las dependencias del proyecto
+```
+Ejecutar el npm install 
+
+2- Para correr el poyecto
+```
+npm run dev
+
+
 /inventarios
 
 - Mostrar todos los inventarios
@@ -47,3 +57,5 @@
 - Permitir eliminar productos de la factura
 - Permitir actualizar productos de la factura
 - Por cada producto mostrar (nombre, cantidad, precio, total)
+
+
