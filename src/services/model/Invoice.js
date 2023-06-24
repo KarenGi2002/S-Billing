@@ -12,7 +12,6 @@
  */
 
 import ApiClient from '../ApiClient'
-import Customer from './Customer'
 import Product from './Product'
 
 /**
@@ -50,9 +49,6 @@ class Invoice {
       if (data.hasOwnProperty('invoiceId')) {
         obj['invoiceId'] = ApiClient.convertToType(data['invoiceId'], 'String')
       }
-      if (data.hasOwnProperty('customerId')) {
-        obj['customerId'] = ApiClient.convertToType(data['customerId'], 'String')
-      }
       if (data.hasOwnProperty('subTotal')) {
         obj['subTotal'] = ApiClient.convertToType(data['subTotal'], 'Number')
       }
@@ -64,9 +60,6 @@ class Invoice {
       }
       if (data.hasOwnProperty('creationDate')) {
         obj['creationDate'] = ApiClient.convertToType(data['creationDate'], 'Date')
-      }
-      if (data.hasOwnProperty('customer')) {
-        obj['customer'] = Customer.constructFromObject(data['customer'])
       }
       if (data.hasOwnProperty('products')) {
         obj['products'] = ApiClient.convertToType(data['products'], [Product])
@@ -90,21 +83,6 @@ class Invoice {
         'Expected the field `invoiceId` to be a primitive type in the JSON string but got ' +
           data['invoiceId']
       )
-    }
-    // ensure the json data is a string
-    if (
-      data['customerId'] &&
-      !(typeof data['customerId'] === 'string' || data['customerId'] instanceof String)
-    ) {
-      throw new Error(
-        'Expected the field `customerId` to be a primitive type in the JSON string but got ' +
-          data['customerId']
-      )
-    }
-    // validate the optional field `customer`
-    if (data['customer']) {
-      // data not null
-      Customer.validateJSON(data['customer'])
     }
     if (data['products']) {
       // data not null
@@ -131,11 +109,6 @@ class Invoice {
 Invoice.prototype['invoiceId'] = undefined
 
 /**
- * @member {String} customerId
- */
-Invoice.prototype['customerId'] = undefined
-
-/**
  * @member {Number} subTotal
  */
 Invoice.prototype['subTotal'] = undefined
@@ -154,11 +127,6 @@ Invoice.prototype['total'] = undefined
  * @member {Date} creationDate
  */
 Invoice.prototype['creationDate'] = undefined
-
-/**
- * @member {module:model/Customer} customer
- */
-Invoice.prototype['customer'] = undefined
 
 /**
  * @member {Array.<module:model/Product>} products
