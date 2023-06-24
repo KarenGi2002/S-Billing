@@ -1,14 +1,17 @@
 import { InvoiceApi } from '../../../services'
 
 const deleteInvoice = (invoiceId, setInvoices) => {
-  new InvoiceApi()
-    .apiInvoiceIdDelete(invoiceId)
-    .then(() => {
-      setInvoices((prev) => prev.filter((obj) => obj.invoiceId !== invoiceId))
-    })
-    .catch(() => {
-      alert('Error deleting invoice from database, please try again later.')
-    })
+  return new Promise((resolve, reject) => {
+    new InvoiceApi()
+      .apiInvoiceIdDelete(invoiceId)
+      .then(() => {
+        setInvoices((prev) => prev.filter((obj) => obj.invoiceId !== invoiceId))
+        resolve('Invoice was deleted successfully')
+      })
+      .catch(() => {
+        reject('Couldn\'t delete invoice from database')
+      })
+  })
 }
 
 export { deleteInvoice }
