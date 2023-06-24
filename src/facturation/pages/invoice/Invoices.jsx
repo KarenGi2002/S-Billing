@@ -1,106 +1,99 @@
-import { Link, useParams } from 'react-router-dom'
-import { AddNewButton } from '../../components'
+import { Link } from 'react-router-dom'
+import { AddNewButton, TableButton } from '../../components'
 import { useEffect, useState } from 'react'
-import { Button, Space, Table } from 'antd'
+import { Space, Table, message } from 'antd'
 import { deleteInvoice } from '../../helpers/invoice'
 import { InvoiceApi } from '../../../services'
+import { createTableColumns } from '../../helpers/createTableColumns'
 
 export const Invoices = () => {
-  const { client_id } = useParams()
+  /* message api from antd */
+  const [messageApi, contextHolder] = message.useMessage()
   const [invoices, setInvoices] = useState([])
-  const addGuiInvoice = (invoice) => {
-    setInvoices((prev) => [{ ...invoice, key: invoice.invoiceId }, ...prev])
-  }
-
-  const tableColumns = [
-    {
-      title: 'SubTotal',
-      dataIndex: 'subTotal',
-      key: 'subTotal'
-    },
-    {
-      title: 'ISV',
-      dataIndex: 'isv',
-      key: 'isv'
-    },
-    {
-      title: 'Total',
-      dataIndex: 'total',
-      key: 'total'
-    },
-    {
-      title: 'Creation Date',
-      dataIndex: 'creationDate',
-      key: 'creationDate'
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            icon={<span className="material-symbols-outlined">delete</span>}
-            size="large"
-            onClick={() => {
-              deleteInvoice(record.invoiceId, setInvoices)
-            }}
-          />
-          <Link to={`/invoices/${record.invoiceId}/products`}>
-            <span className="material-symbols-outlined">inventory</span>
-          </Link>
-        </Space>
-      )
-    }
-  ]
+  const [columns, setColumns] = useState([])
+  const addGuiInvoice = (invoice) => { setInvoices((prev) => [{ ...invoice, key: invoice.invoiceId }, ...prev]) }
 
   const body = {
     invoice: {
       subTotal: 0,
       isv: 0,
       total: 0,
-      customerId: client_id
     }
   }
-  /* Post invoice */
+
   const postInvoice = () => {
     new InvoiceApi()
       .apiInvoicePost(body)
       .then((response) => {
-        const splittedDate = response.body.creationDate.split('-')
         addGuiInvoice({
           ...body.invoice,
           invoiceId: response.body.invoiceId,
-          creationDate: splittedDate.slice(0, splittedDate.length - 1).join('-')
+          creationDate: response.body.creationDate.split('T')[0]
         })
-        alert('Invoice has been added successfully!')
+        messageApi.open({ type: 'success', content: 'Invoice was addded successfully' })
       })
       .catch(() => {
-        alert('Error adding invoice to the database, please try again later.')
+        messageApi.open({ type: 'error', content: 'Couldn\'t add invoice to database' })
       })
   }
-
-  /* Load invoices from API get endpoint */
-  useEffect(() => {
+  const getInvoices = () => {
     new InvoiceApi()
-      .apiInvoiceGet()
-      .then(({ body }) => {
-        /* Add key property to each invoice */
-        const invoicesWithKey = body.map((invoice) => ({
-          ...invoice,
-          key: invoice.invoiceId
-        }))
-        setInvoices(invoicesWithKey)
-      })
-      .catch(() => {
-        alert('Error reading invoices from the database, please try again later.')
-      })
+    .apiInvoiceGet()
+    .then(({ body }) => {
+      /* Add key property to each invoice */
+      const invoicesWithKey = body.map((invoice) => ({
+        ...invoice,
+        creationDate: invoice.creationDate.split('T')[0],
+        key: invoice.invoiceId
+      }))
+      setInvoices(invoicesWithKey)
+    })
+    .catch(() => {
+      messageApi.open({
+        type: 'error',
+        content: 'Couldn\'t read invoices from database',
+      });
+    })
+  }
+  
+  /* run when component is mounted */
+  useEffect(() => {
+    getInvoices()
+    setColumns(createTableColumns([
+      { val: 'Sub Total' },
+      { val: 'ISV' },
+      { val: 'Total' },
+      { val: 'Creation Date' },
+      {
+        val: 'Action',
+        render: (_, record) => (
+          <Space size="middle">
+            <TableButton
+              iconName="delete"
+              handler={() => {
+                deleteInvoice(record.invoiceId, setInvoices)
+                .then(msg => {
+                  messageApi.open({ type: 'success', content: msg })
+                })
+                .catch(err => {
+                  messageApi.open({ type: 'error', content: err })
+                })
+              }}
+            />
+            <Link to={`/invoices/${record.invoiceId}/products`}>
+              <span className="material-symbols-outlined">inventory</span>
+            </Link>
+          </Space>
+        )
+      }
+    ]))
   }, [])
 
   return (
     <section className="container">
+      {contextHolder}
       <AddNewButton toggleFormPopup={postInvoice} />
-      <Table dataSource={invoices} columns={tableColumns} />
+      <Table dataSource={invoices} columns={columns} />
     </section>
   )
 }
