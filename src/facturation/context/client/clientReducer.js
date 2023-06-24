@@ -24,7 +24,6 @@ export const clientReducer = (state = {}, action) => {
         customers: action.payload
       }
     case customerTypes.add:
-      console.log([...prevCustomers, {...action.payload}])
       return {
         ...state,
         customers: [...prevCustomers, action.payload]
