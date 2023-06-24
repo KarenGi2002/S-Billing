@@ -30,20 +30,22 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
     )
   }
   useEffect(() => {
-    new InventoryApi()
-      .apiInventoryGet()
-      .then(({ body }) => {
-           const inventoriesWithKey = body.map((inventory) => ({
+    const fetchData = async () => {
+      try {
+        const { body } = await new InventoryApi().apiInventoryGet();
+        const inventoriesWithKey = body.map((inventory) => ({
           ...inventory,
-          amount: inventory.name,
           key: inventory.inventoryId
-        }))
-        setInventories(inventoriesWithKey)
-      })
-      .catch((err) => {
-        setError(err.message)
-      })
-  }, [])
+        }));
+        setInventories(inventoriesWithKey);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
 
   
   const tableColumns = [
@@ -52,11 +54,7 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
       dataIndex: 'name',
       key: 'name'
     },
-    {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount'
-    },
+ 
     {
       title: 'Action',
       key: 'action',
