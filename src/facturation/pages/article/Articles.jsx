@@ -1,21 +1,22 @@
 import { useEffect, useState } from 'react'
-import { AddNewButton, EditArticle,  } from '../../components'
-import { ArticleApi } from '../../../services'
-import { Button, Space, Table, message, } from 'antd'
+import { AddNewButton, EditArticle } from '../../components'
+import { InventoryApi } from '../../../services'
+import { Button, Space, Table, message } from 'antd'
 import { findArticle, deleteArticle } from '../../helpers/article'
 import { AddArticle } from '../../components/articles/AddArticle'
-
+import { useParams } from 'react-router-dom'
 
 export const Articles = () => {
+  const { inventory_id } = useParams()
   const [articles, setArticles] = useState([])
   const [editArticle, setEditArticle] = useState({})
   const [error, setError] = useState('')
   const [displayForm, setDisplayForm] = useState(false)
   const toggleDisplayForm = () => setDisplayForm((prev) => !prev)
-  const [messageApi, contextHolder] = message.useMessage();
+  const [messageApi, contextHolder] = message.useMessage()
   const toggleDisplayEditForm = () => setEditArticle({})
   const addGuiArticle = (article) => {
-setArticles((prev) => [{...article, key: article?.articleId}, ...prev])
+    setArticles((prev) => [{ ...article, key: article?.articleId }, ...prev])
   }
 
   const updateGuiArticle = (articleId, updatedArticle) => {
@@ -25,18 +26,16 @@ setArticles((prev) => [{...article, key: article?.articleId}, ...prev])
         return {
           key: article.key,
           articleId,
-          ...updatedArticle,
-
+          ...updatedArticle
         }
-
       })
     )
   }
   useEffect(() => {
-    new ArticleApi()
-      .apiArticleGet()
+    new InventoryApi()
+      .apiInventoryIdArticlesGet(inventory_id)
       .then(({ body }) => {
-           const articlesWithKey = body.map((article) => ({
+        const articlesWithKey = body['$values'].map((article) => ({
           ...article,
           amount: article.name,
           key: article.articleId
@@ -48,7 +47,6 @@ setArticles((prev) => [{...article, key: article?.articleId}, ...prev])
       })
   }, [])
 
-  
   const tableColumns = [
     {
       title: 'Name',
@@ -80,24 +78,28 @@ setArticles((prev) => [{...article, key: article?.articleId}, ...prev])
             type="primary"
             icon={<span className="material-symbols-outlined">delete</span>}
             size="large"
-            onClick={() => {deleteArticle(record.articleId, setArticles, messageApi)}}
-            
+            onClick={() => {
+              deleteArticle(record.articleId, setArticles, messageApi)
+            }}
           />
-       
         </Space>
       )
     }
   ]
 
-
   return (
-
     <section className="container">
-          {contextHolder}
+      {contextHolder}
       <AddNewButton toggleFormPopup={toggleDisplayForm} />
       <Table dataSource={articles} columns={tableColumns} />
       {error !== '' && <p>{error}</p>}
-      {displayForm && (<AddArticle toggleDisplayForm={toggleDisplayForm} addGuiArticle={addGuiArticle} messageApi={messageApi}/>)}
+      {displayForm && (
+        <AddArticle
+          toggleDisplayForm={toggleDisplayForm}
+          addGuiArticle={addGuiArticle}
+          messageApi={messageApi}
+        />
+      )}
       {Object.keys(editArticle).length !== 0 && (
         <EditArticle
           article={editArticle}
