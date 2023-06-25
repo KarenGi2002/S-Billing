@@ -8,6 +8,7 @@ const deleteArticle = (articleId, setArticles, messageApi) => {
       messageApi.open({
         type: 'success',
         content: 'Article has been delete successfully!',
+
       });
     })
     .catch(() => {

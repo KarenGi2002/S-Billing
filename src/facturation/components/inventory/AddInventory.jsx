@@ -4,7 +4,7 @@ import { InventoryApi } from '../../../services'
 import { useState } from 'react'
 import { Popup } from '../Popup'
 
-export const AddInventory = ({ toggleDisplayForm, addGuiInventory }) => {
+export const AddInventory = ({ toggleDisplayForm, addGuiInventory, messageApi }) => {
   const [form] = Form.useForm()
   const [error, setError] = useState('')
 
@@ -23,10 +23,16 @@ export const AddInventory = ({ toggleDisplayForm, addGuiInventory }) => {
        addGuiInventory({...body.inventory,inventoryId:newtext, amount:0})
 
         toggleDisplayForm()
-        alert('Inventory has been created successfully!')
+        messageApi.open({
+          type: 'success',
+          content: 'Inventory has been added successfully!',
+        });
       })
-      .catch((err) => {
-        setError(err)
+      .catch(() => {
+        messageApi.open({
+          type: 'error',
+          content: 'Couldn\'t add inventory to database',
+        });
       })
   }
 

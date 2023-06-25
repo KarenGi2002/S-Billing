@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AddNewButton, EditInventory,  } from '../../components'
 import { InventoryApi } from '../../../services'
-import { Button, Space, Table, } from 'antd'
+import { Button, Space, Table,message} from 'antd'
 import { findInventory, deleteInventory } from '../../helpers/inventory'
 import { AddInventory } from '../../components/inventory/AddInventory'
 import { Link } from 'react-router-dom'
@@ -10,6 +10,7 @@ export const Inventories = () => {
   const [inventories, setInventories] = useState([])
   const [editInventory, setEditInventory] = useState({})
   const [error, setError] = useState('')
+  const [messageApi, contextHolder] = message.useMessage();
   const [displayForm, setDisplayForm] = useState(false)
   const toggleDisplayForm = () => setDisplayForm((prev) => !prev)
   const toggleDisplayEditForm = () => setEditInventory({})
@@ -17,7 +18,7 @@ export const Inventories = () => {
 setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
   }
 
-  const updateGuiInventory = (inventoryId, updatedInventory) => {
+  const updateGuiInventory = (inventoryId, updatedInventory, ) => {
     setInventories((prev) =>
       prev.map((inventory) => {
         if (inventory.inventoryId !== inventoryId) return inventory
@@ -25,26 +26,25 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
           key: inventory.key,
           inventoryId,
           ...updatedInventory
+          
         }
       })
     )
   }
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { body } = await new InventoryApi().apiInventoryGet();
+    new InventoryApi()
+    .apiInventoryGet()
+     .then(({body}) => {
         const inventoriesWithKey = body.map((inventory) => ({
           ...inventory,
-          key: inventory.inventoryId
-        }));
+              key: inventory.inventoryId
+        }))
         setInventories(inventoriesWithKey);
-      } catch (err) {
+      } )
+      .catch((err) => {
         setError(err.message);
-      }
-    };
-  
-    fetchData();
-  }, []);
+      })
+  }, [])
   
 
   
@@ -54,7 +54,7 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
       dataIndex: 'name',
       key: 'name'
     },
- 
+   
     {
       title: 'Action',
       key: 'action',
@@ -64,13 +64,13 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
             type="primary"
             icon={<span className="material-symbols-outlined">edit</span>}
             size="large"
-            onClick={() => setEditInventory(findInventory(record.inventoryId, inventories))}
+            onClick={() => setEditInventory(findInventory(record.inventoryId, inventories, messageApi))}
           />
           <Button
             type="primary"
             icon={<span className="material-symbols-outlined">delete</span>}
             size="large"
-            onClick={() => {deleteInventory(record.inventoryId, setInventories)}}
+            onClick={() => {deleteInventory(record.inventoryId, setInventories, messageApi)}}
             
           />
            <Link to={`/inventories/${record.inventoryId}/Articles`}>
@@ -85,16 +85,18 @@ setInventories((prev) => [{...inventory, key: inventory?.inventoryId}, ...prev])
   return (
 
     <section className="container">
+      {contextHolder}
       <AddNewButton toggleFormPopup={toggleDisplayForm} />
       <Table dataSource={inventories} columns={tableColumns} />
       {error !== '' && <p>{error}</p>}
       {displayForm && ( 
-      <AddInventory toggleDisplayForm={toggleDisplayForm} addGuiInventory={addGuiInventory}/>)}
+      <AddInventory toggleDisplayForm={toggleDisplayForm} addGuiInventory={addGuiInventory} messageApi={messageApi}/>)}
       {Object.keys(editInventory).length !== 0 && (
         <EditInventory
           inventory={editInventory}
           toggleDisplayForm={toggleDisplayEditForm}
           updateGuiInventory={updateGuiInventory}
+          messageApi={messageApi}
         />
       )}
     </section>

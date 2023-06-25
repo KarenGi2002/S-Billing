@@ -4,7 +4,7 @@ import { InventoryApi } from '../../../services'
 import { useState } from 'react'
 import { Popup } from '../Popup'
 
-export const EditInventory = ({ inventory, toggleDisplayForm, updateGuiInventory }) => {
+export const EditInventory = ({ inventory, toggleDisplayForm, updateGuiInventory, messageApi }) => {
   const [form] = Form.useForm()
   const [error, setError] = useState('')
 
@@ -24,13 +24,20 @@ const body = {
 
     new InventoryApi()
       .apiInventoryIdPut(inventoryId, body)
+  
       .then(() => {
         updateGuiInventory(inventoryId, body.inventory)
         toggleDisplayForm()
-        alert('Inventory has been changed successfully!')
+        messageApi.open({
+          type: 'success',
+          content: 'Inventory has been change successfully!',
+        });
       })
-      .catch((err) => {
-        setError(err)
+      .catch(() => {
+        messageApi.open({
+          type: 'error',
+          content: 'Couldn\'t inventory article to database',
+        });
       })
   }
 
